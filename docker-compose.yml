@@ -1,0 +1,19 @@
+version: '2'
+services:
+  postgres-teste:
+    image: postgres:9.3
+    ports:
+      - "25432:5432"
+    environment:
+      - POSTGRES_USER=dsaouda
+      - POSTGRES_PASSWORD=dsaouda
+   
+  pgbouncer-teste:
+    image: mbentley/ubuntu-pgbouncer
+    ports:
+      - "16432:6432"
+    environment:
+      - PG_PORT_5432_TCP_ADDR=192.168.33.10
+      - PG_PORT_5432_TCP_PORT=25432
+      - PG_ENV_POSTGRESQL_USER=dsaouda
+      - PG_ENV_POSTGRESQL_PASS=dsaouda
