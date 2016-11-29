@@ -34,7 +34,7 @@ public class TesteEscrita {
 	private static final int TAMANHO_TESTE = 100;
 	private static final int PGBOUNCER = 1;
 	private static final int POSTGRES = 2;
-	private static final int tipoConexao = PGBOUNCER;	
+	private static final int tipoConexao = POSTGRES;	
 
 	public static void main(String[] args) throws SQLException {
 		Truncate.main(args);

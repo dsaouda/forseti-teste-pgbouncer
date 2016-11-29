@@ -8,11 +8,11 @@ final public class ConnectionFactory {
 	
 	private ConnectionFactory() {}
 	
-	private final static String DATABASE = "dsaouda";
+	private final static String DATABASE = "admin";
 	private final static String URL_PGBOUNCER = "jdbc:postgresql://192.168.33.10:16432/" + DATABASE;
 	private final static String URL = "jdbc:postgresql://192.168.33.10:25432/" + DATABASE;
-	private final static String USUARIO = "dsaouda";
-	private final static String SENHA = "dsaouda";
+	private final static String USUARIO = "admin";
+	private final static String SENHA = "123";
 	
 	public static Connection create() {
 		try {
