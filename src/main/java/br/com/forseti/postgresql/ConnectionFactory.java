@@ -1,33 +1,61 @@
 package br.com.forseti.postgresql;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 final public class ConnectionFactory {
 	
-	private ConnectionFactory() {}
+	private static Properties config = new Properties();
 	
-	private final static String DATABASE = "admin";
-	private final static String URL_PGBOUNCER = "jdbc:postgresql://192.168.33.10:16432/" + DATABASE;
-	private final static String URL = "jdbc:postgresql://192.168.33.10:25432/" + DATABASE;
-	private final static String USUARIO = "admin";
-	private final static String SENHA = "123";
-	
-	public static Connection create() {
+	static {		
 		try {
-			return DriverManager.getConnection(URL, USUARIO, SENHA);
+			InputStream stream = ConnectionFactory.class.getResourceAsStream("/config.properties");		
+			config.load(stream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}		
+	}
+	
+	public static Connection createPorTipo() {		
+		switch(tipoConexao()) {		
+		case "pgbouncer": 
+			return createPgBouncer();
+			
+		default:
+			case "db": return create();		
+		}
+	}
+	
+	public static String tipoConexao() {
+		return config.getProperty("use");
+	}
+		
+	public static Connection create() {
+		return createConnection("db");
+	}
+	
+	public static Connection createPgBouncer() {
+		return createConnection("pgbouncer");
+	}
+	
+	private static Connection createConnection(String tipo) {
+		try {
+			return DriverManager.getConnection(config.getProperty(tipo + ".host"), config.getProperty(tipo + ".user"), config.getProperty(tipo + ".pass"));
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	public static Connection createPgBouncer() {
-		try {
-			return DriverManager.getConnection(URL_PGBOUNCER, USUARIO, SENHA);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+
+	public static int tamanhoTeste() {		
+		return Integer.parseInt(config.getProperty("tamanhoteste"));
+	}
+
+	public static int iteracao() {
+		return Integer.parseInt(config.getProperty("iteracao"));
 	}
 	
 }

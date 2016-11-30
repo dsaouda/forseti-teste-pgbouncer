@@ -1,0 +1,11 @@
+db.host=jdbc:postgresql://IP:PORTA/admin
+db.user=admin
+db.pass=123
+
+pgbouncer.host=jdbc:postgresql://IP:PORTA/admin
+pgbouncer.user=admin
+pgbouncer.pass=123
+
+use=db
+tamanhoteste=100
+iteracao=10

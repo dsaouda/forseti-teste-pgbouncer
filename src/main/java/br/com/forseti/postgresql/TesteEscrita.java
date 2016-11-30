@@ -30,20 +30,17 @@ import java.sql.SQLException;
 //Tempo gasto: 879 ms
 
 public class TesteEscrita {
-	private static final int ITERACAO = 10;
-	private static final int TAMANHO_TESTE = 100;
-	private static final int PGBOUNCER = 1;
-	private static final int POSTGRES = 2;
-	private static final int tipoConexao = POSTGRES;	
-
+	private static final int ITERACAO = ConnectionFactory.iteracao();
+	private static final int TAMANHO_TESTE = ConnectionFactory.tamanhoTeste();
+	
 	public static void main(String[] args) throws SQLException {
 		Truncate.main(args);
 		
-		for (int j = 1; j<=ITERACAO; j++) {			
+		for (int j = 1; j <= ITERACAO; j++) {			
 			long inicio = System.currentTimeMillis();
 
 			for(int i = 1; i <= TAMANHO_TESTE; i++) {
-				Connection conn = getConnection();
+				Connection conn = ConnectionFactory.createPorTipo();
 				PreparedStatement stmt = conn.prepareStatement("INSERT INTO tb_log (id_cliente, id_usuario, nm_modulo, nm_evento, nm_controller, nm_action) VALUES (?,?,?,?,?,?)");
 				stmt.setInt(1, i);
 				stmt.setInt(2, i);
@@ -57,18 +54,6 @@ public class TesteEscrita {
 
 			long fim = System.currentTimeMillis();			
 			System.out.println("Tempo gasto: " + (fim - inicio) + " ms");			
-		}
-	}
-
-	private static Connection getConnection() {
-		switch(tipoConexao) {
-		case PGBOUNCER:
-			return ConnectionFactory.createPgBouncer();
-		
-		case POSTGRES:
-		default:		
-			return ConnectionFactory.create();
-
 		}
 	}
 }

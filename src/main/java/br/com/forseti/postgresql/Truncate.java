@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class Truncate {
 	public static void main(String[] args) throws SQLException {		
 		
-		Connection conn = ConnectionFactory.create();
+		Connection conn = ConnectionFactory.createPorTipo();
 		conn.prepareStatement("DROP TABLE IF EXISTS tb_log").execute();
 		
 		String ddl = "" 
